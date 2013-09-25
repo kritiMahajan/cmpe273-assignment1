@@ -40,7 +40,8 @@ public class BookResource {
 			//"Author Name Cannot Be NULL/BLANK";
 		for(Author author:book.getAuthors()){				
 			if(author.getName().equals(null) || author.getName().isEmpty()){
-				return Response.status(422).build();
+				return Response.status(422).type("text/plain")
+		                .entity("Author name cannot be null or blank").build();
 						
 			}
 		}		
@@ -100,7 +101,8 @@ public class BookResource {
 			BookRepository.deleteBookFromRepository(isbn);
 		}else{
 			//Book do not exist
-			return Response.status(404).build();
+			return Response.status(404).type("text/plain")
+	                .entity("Book does not exist").build();
 			
 		}
 		
@@ -121,7 +123,9 @@ public class BookResource {
 		statusList.add("in-queue");
 		statusList.add("lost");
 		if(!statusList.contains(status)){		
-			return Response.status(404).build();			
+			return Response.status(422).type("text/plain")
+	                .entity("Invalid value for Status. Status can only be available/checked-out/in-queue/lost")
+	                .build();			
 		}
 	
 		Book bookToBeUpdated=BookRepository.getBookById(isbn);		
